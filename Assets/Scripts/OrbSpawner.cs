@@ -2,11 +2,10 @@ using System.Collections;
 using Meta.XR.MRUtilityKit;
 using UnityEngine;
 
-public class GhostSpawner : MonoBehaviour
+public class OrbSpawner : MonoBehaviour
 {
-    public float spawnInterval = 1f;
-    public GameObject ghostPrefab;
-    public static int ghostCount = 20;
+    public GameObject orbPrefab;
+    public static int orbCount = 2;
     
     public float minEdgeDistance = 0.3f;
     public MRUKAnchor.SceneLabels spawnLabels;
@@ -15,20 +14,13 @@ public class GhostSpawner : MonoBehaviour
     
     void Start()
     {
-        StartCoroutine(SpawnGhostsCoroutine());
-    }
-
-    private IEnumerator SpawnGhostsCoroutine()
-    {
-        while (ghostCount > 0)
+        for (int i = 0; i < orbCount; i++)
         {
-            yield return new WaitForSeconds(spawnInterval);
-            SpawnGhost();
-            ghostCount--;                        
+            SpawnOrb();
         }
     }
 
-    private void SpawnGhost()
+    private void SpawnOrb()
     {
         MRUKRoom room = MRUK.Instance.GetCurrentRoom();
 
@@ -40,7 +32,7 @@ public class GhostSpawner : MonoBehaviour
             {
                 Vector3 randomPosition = pos + norm * normalOffset;
                 //randomPosition.y = 0f;
-                Instantiate(ghostPrefab, randomPosition, Quaternion.identity);
+                Instantiate(orbPrefab, randomPosition, Quaternion.identity);
                 return;
             }
             else
@@ -49,5 +41,4 @@ public class GhostSpawner : MonoBehaviour
             }
         }
     }
-    
 }
