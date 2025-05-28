@@ -6,7 +6,7 @@ public class GhostSpawner : MonoBehaviour
 {
     public float spawnInterval = 1f;
     public GameObject ghostPrefab;
-    public static int ghostCount = 20;
+    public GameManager gameManager;
     
     public float minEdgeDistance = 0.3f;
     public MRUKAnchor.SceneLabels spawnLabels;
@@ -20,11 +20,11 @@ public class GhostSpawner : MonoBehaviour
 
     private IEnumerator SpawnGhostsCoroutine()
     {
-        while (ghostCount > 0)
+        while (gameManager.ghostsActive > 0)
         {
             yield return new WaitForSeconds(spawnInterval);
             SpawnGhost();
-            ghostCount--;                        
+            gameManager.ghostsActive--;                        
         }
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class OrbSpawner : MonoBehaviour
 {
     public GameObject orbPrefab;
-    public static int orbCount = 2;
+    public GameManager gameManager;
     
     public float minEdgeDistance = 0.3f;
     public MRUKAnchor.SceneLabels spawnLabels;
@@ -14,31 +14,33 @@ public class OrbSpawner : MonoBehaviour
     
     void Start()
     {
-        for (int i = 0; i < orbCount; i++)
-        {
-            SpawnOrb();
-        }
+        MRUK.Instance.RegisterSceneLoadedCallback(SpawnOrbs);
+        
     }
 
-    private void SpawnOrb()
+    private void SpawnOrbs()
     {
-        MRUKRoom room = MRUK.Instance.GetCurrentRoom();
-
-        int currentTry = 0;
-        while (currentTry < 100)
+        for (int i = 0; i < gameManager.orbsActive; i++)
         {
-            bool hasFoundPosition = room.GenerateRandomPositionOnSurface(MRUK.SurfaceType.VERTICAL, minEdgeDistance, LabelFilter.Included(spawnLabels), out Vector3 pos, out Vector3 norm);
-            if (hasFoundPosition)
+            MRUKRoom room = MRUK.Instance.GetCurrentRoom();
+                 
+            int currentTry = 0;
+            while (currentTry < 100)
             {
-                Vector3 randomPosition = pos + norm * normalOffset;
-                //randomPosition.y = 0f;
-                Instantiate(orbPrefab, randomPosition, Quaternion.identity);
-                return;
-            }
-            else
-            {
-                currentTry++;
+                bool hasFoundPosition = room.GenerateRandomPositionOnSurface(MRUK.SurfaceType.VERTICAL, minEdgeDistance, LabelFilter.Included(spawnLabels), out Vector3 pos, out Vector3 norm);
+                if (hasFoundPosition)
+                {
+                    Vector3 randomPosition = pos + norm * normalOffset;
+                    //randomPosition.y = 0f;
+                    Instantiate(orbPrefab, randomPosition, Quaternion.identity);
+                    return;
+                }
+                else
+                {
+                    currentTry++;
+                }
             }
         }
+        
     }
 }

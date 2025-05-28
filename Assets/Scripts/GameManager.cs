@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public int orbsActive;
-    public int ghostsActive;
+    public int orbsActive = 2;
+    public int ghostsActive = 20;
     
     public TextMeshProUGUI orbsText;
     public TextMeshProUGUI ghostCountText;
 
     private void Start()
     {
-        orbsActive = OrbSpawner.orbCount;
-        ghostsActive = GhostSpawner.ghostCount;
     }
 
     private void Update()
